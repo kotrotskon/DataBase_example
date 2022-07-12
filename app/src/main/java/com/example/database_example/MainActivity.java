@@ -1,6 +1,8 @@
 package com.example.database_example;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,12 +16,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button btn_addNewProduct = findViewById(R.id.btn_addNewProduct);
+        recyclerView = findViewById(R.id.recyclerView);
 
         btn_addNewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,25 +34,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<Product> products = Product.getAll(MainActivity.this);
-
-        for (Product product : products) {
-            Log.d("PRODUCT", product.getTitle());
-        }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        SQLiteHelper helper = new SQLiteHelper(MainActivity.this);
-        SQLiteDatabase database = helper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("SELECT count(*) as count FROM products", null);
-        cursor.moveToFirst();
+        ArrayList<Product> products = Product.getAll(MainActivity.this);
 
-        int count = cursor.getInt(0);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        Log.d("SQLite", count+"");
+        ProductAdapter adapter = new ProductAdapter(MainActivity.this, products);
+        recyclerView.setAdapter(adapter);
     }
 }

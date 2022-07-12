@@ -8,13 +8,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "products";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_PRODUCTS = "products";
 
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_DESCRIPTION = "description";
     public static final String COLUMN_PRICE = "price";
+
+    public static final String[] PRODUCTS_COLUMN= {COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_PRICE};
 
 
 
@@ -47,11 +50,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PRICE, 639.00);
         sqLiteDatabase.insert(TABLE_PRODUCTS, null, values);
 
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        ContentValues values = new ContentValues();
+        values = new ContentValues();
         values.put(COLUMN_TITLE, "HP 15s-eq1022nv Laptop 15.6 Full HD");
         values.put(COLUMN_DESCRIPTION, "Ο φορητός υπολογιστής 15s-eq1022nv προσφέρει αξιόπιστη απόδοση για streaming, περιήγηση και άνετη εργασία, ώστε να έχεις απρόσκοπτη παραγωγικότητα και ψυχαγωγία, όπου κι αν βρίσκεσαι!                Βασίζεται στον επεξεργαστή AMD Athlon™ Silver 3050U (δύο πυρήνες, δύο νήματα, έως 3,2 GHz και με ενσωματωμένα γραφικά AMD Radeon™) ο οποίος πλαισιώνεται από 8 GB μνήμης DDR4-2400 για αποδοτικό multitasking και από την αποθηκευτική μονάδα NVMe M.2 SSD με χωρητικότητα 256 GB, για ταχύτατη εκκίνηση και άμεση απόκριση σε ό,τι κι αν κάνεις.«Οδηγώντας» την αντιθαμβωτική οθόνη IPS Full HD (1.920 x 1.080 pixels) με πλαίσιο Micro-Edge, η ενσωματωμένη στον επεξεργαστή κάρτα γραφικών AMD Radeon™ Graphics είναι ικανή να ανταποκριθεί σε απαιτητικές εφαρμογές ενώ αποδίδει ικανοποιητικά και στο casual gaming. Με Windows 11 (S Mode) και βάρος 1,69 κιλά, μπορείς να τον μεταφέρεις παντού με ευκολία!");
         values.put(COLUMN_PRICE, 349.00);
@@ -62,5 +61,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, "O λεπτός και ισχυρός φορητός υπολογιστής HP Pavilion Gaming 15-ec2003nv σχεδιάστηκε για να απολαμβάνεις κορυφαία γραφικά και επεξεργαστική ισχύ στα παιχνίδια και κορυφαία απόδοση στην εκτέλεση πολλαπλών εργασιών.Με συμπαγές σασί, μικρό πλαίσιο οθόνης, οπισθοφωτιζόμενο πληκτρολόγιο, «ταχύτατη» οθόνη 15,6 ιντσών (144Hz) και ισχυρό hardware, ο HP Pavilion Gaming 15-ec2003nv έχει όλα όσα χρειάζεσαι για να απολαμβάνεις το παιχνίδι χωρίς συμβιβασμούς.Στο εσωτερικό του βρίσκεται ο οκταπύρηνος επεξεργαστής AMD Ryzen™ 7 5800H στα 3,2 GHz (Max Boost Clock 4,4 GHz) σε συνδυασμό με την ανεξάρτητη κάρτα γραφικών NVIDIA® GeForce® RTX 3050 4GB GDDR6, 16GB μνήμης DDR4-3200 και το ταχύτατο PCIe® NVMe™ M.2 SSD χωρητικότητας 512 GB.Απόλαυσε υψηλά framerates και κορυφαία ποιότητα απεικόνισης χωρίς συμβιβασμούς με τον φορητό υπολογιστή HP Pavilion Gaming 15-ec2003nv.");
         values.put(COLUMN_PRICE, 999.00);
         sqLiteDatabase.insert(TABLE_PRODUCTS, null, values);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
     }
 }

@@ -23,6 +23,23 @@ public class Product {
         this.price = price;
     }
 
+    public Product(Context context, int id){
+        SQLiteHelper helper = new SQLiteHelper(context);
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCTS, SQLiteHelper.PRODUCTS_COLUMN, "id = ?", new String[]{String.valueOf(id)}, null, null, null);
+
+        cursor.moveToFirst();
+
+        this.id = id;
+        this.title = cursor.getString(1);
+        this.description = cursor.getString(2);
+        this.price = cursor.getDouble(3);
+
+        database.close();
+        helper.close();
+    }
+
     public int getId() {
         return id;
     }
@@ -72,27 +89,57 @@ public class Product {
         helper.close();
     }
 
+    public void update(Context context, String title, String description, double price){
+        SQLiteHelper helper = new SQLiteHelper(context);
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(helper.COLUMN_TITLE, title);
+        values.put(helper.COLUMN_DESCRIPTION, description);
+        values.put(helper.COLUMN_PRICE, price);
+
+        database.update(SQLiteHelper.TABLE_PRODUCTS, values, "id = ?", new String[]{String.valueOf(this.id)});
+
+        database.close();
+        helper.close();
+    }
+
+    public void delete(Context context){
+        SQLiteHelper helper = new SQLiteHelper(context);
+        SQLiteDatabase database = helper.getWritableDatabase();
+
+        database.delete(SQLiteHelper.TABLE_PRODUCTS, "id = ?", new String[]{String.valueOf(this.id)});
+
+        database.close();
+        helper.close();
+    }
+
     public static ArrayList<Product> getAll(Context context){
         ArrayList<Product> products = new ArrayList<>();
 
         SQLiteHelper helper = new SQLiteHelper(context);
         SQLiteDatabase database = helper.getWritableDatabase();
 
-        Cursor cursor = database.rawQuery("SELECT * FROM products", null);
+//        Cursor cursor = database.rawQuery("SELECT * FROM products", null);
+        Cursor cursor = database.query(SQLiteHelper.TABLE_PRODUCTS, SQLiteHelper.PRODUCTS_COLUMN, null, null, null, null, null);
+
 
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()){
             Product product = new Product();
-            product.setId(cursor.getInt(0));
-            product.setTitle(cursor.getString(1));
-            product.setDescription(cursor.getString(2));
-            product.setPrice( cursor.getDouble(3));
+            product.id = cursor.getInt(0);
+            product.title = cursor.getString(1);
+            product.description = cursor.getString(2);
+            product.price = cursor.getDouble(3);
 
             products.add(product);
 
             cursor.moveToNext();
         }
+
+        database.close();
+        helper.close();
 
         return products;
     }
