@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -19,6 +21,25 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn_addNewProduct = findViewById(R.id.btn_addNewProduct);
 
+        btn_addNewProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewProductActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ArrayList<Product> products = Product.getAll(MainActivity.this);
+
+        for (Product product : products) {
+            Log.d("PRODUCT", product.getTitle());
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         SQLiteHelper helper = new SQLiteHelper(MainActivity.this);
         SQLiteDatabase database = helper.getWritableDatabase();
 
@@ -28,14 +49,5 @@ public class MainActivity extends AppCompatActivity {
         int count = cursor.getInt(0);
 
         Log.d("SQLite", count+"");
-
-        btn_addNewProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewProductActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 }
